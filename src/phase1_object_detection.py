@@ -303,17 +303,11 @@ def main():
             cv2.imwrite(filename, frame)
             print(f"[INFO] Screenshot saved: {filename}")
 
-    # STEP 11: Cleanup
-    # Always release camera and destroy windows.
-    # Not doing this leaves the webcam locked for other apps.
     print("[INFO] Releasing camera and closing window...")
     cap.release()
     cv2.destroyAllWindows()
     print("[INFO] Phase 1 complete.")
     print("=" * 60)
 
-# ENTRY POINT
-# This block runs only when you execute this file directly.
-# It does NOT run if another script imports this file as a module.
 if __name__ == "__main__":
     main()
