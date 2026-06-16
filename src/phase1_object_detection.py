@@ -1,21 +1,3 @@
-# =============================================================================
-# PROJECT  : Real-Time Object and Human Detection with Crowd Alert System
-# PHASE    : Phase 1 — General Object Detection
-# AUTHOR   : Ashish Kumar
-# COMPANY  : Techlive Solutions
-# PURPOSE  : Detect and identify common objects in real time using a webcam.
-#            Draw bounding boxes around detected objects.
-#            Show object labels and confidence scores on screen.
-#            Process live video streams in real time at fullscreen.
-# =============================================================================
-
-# IMPORTS
-# os         : Path handling — builds absolute paths so files are always found
-# cv2        : OpenCV — opens webcam, draws on frames, shows the window
-# time       : Python built-in — used to calculate FPS (frames per second)
-# numpy      : Array operations — required for color generation with OpenCV
-# datetime   : Python built-in — used to timestamp saved screenshots
-# ultralytics: The Ultralytics library that contains YOLOv8
 import os
 import cv2
 import time
@@ -31,11 +13,7 @@ FRAME_HEIGHT   = 480        # Height of the video frame in pixels
 CONFIDENCE_MIN = 0.40       # Only show detections above 40% confidence (0.0 to 1.0)
 WINDOW_NAME    = "Phase 1 - Object Detection | Techlive Solutions"
 
-# Absolute path to model — always loads from models\ folder, never from src\
-# __file__ = full path of this script e.g. D:\crowd_detection\src\phase1...py
-# dirname  = D:\crowd_detection\src
-# join ..  = D:\crowd_detection
-# join models\yolov8n.pt = D:\crowd_detection\models\yolov8n.pt
+
 MODEL_PATH = os.path.normpath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "models", "yolov8n.pt")
 )
@@ -68,8 +46,6 @@ def generate_colors(num_classes: int) -> list:
         # Spread hue evenly across 0 to 179 (OpenCV HSV hue range)
         hue = int(179 * i / num_classes)
 
-        # Create a proper NumPy array — required for cv2.cvtColor in newer versions
-        # Shape must be (1, 1, 3) and dtype must be uint8
         hsv_array = np.array([[[hue, 220, 200]]], dtype=np.uint8)
         bgr_array = cv2.cvtColor(hsv_array, cv2.COLOR_HSV2BGR)
         hsv_pixel = bgr_array[0][0]
@@ -197,17 +173,7 @@ def draw_hud(frame, fps: float, total_detections: int) -> None:
 
 # FUNCTION: main
 def main():
-    """
-    Main execution function for Phase 1.
-
-    Steps:
-    1. Load YOLOv8n model
-    2. Open webcam at 640x480
-    3. Set window to fullscreen
-    4. Loop: read frame -> run YOLO -> draw detections -> show frame
-    5. Handle S key (screenshot) and Q key (quit)
-    6. Release camera and close window cleanly
-    """
+   
     print("=" * 60)
     print("  Phase 1: Real-Time Object Detection")
     print("  Model  : YOLOv8n (COCO - 80 classes)")
