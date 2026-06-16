@@ -1,0 +1,43 @@
+# =============================================================================
+# requirements.txt — Real-Time Object and Human Detection with Crowd Alert System
+# Author  : Ashish Kumar | Techlive Solutions
+# =============================================================================
+#
+# INSTALLATION INSTRUCTIONS (run these in order):
+#
+# Step 1 — Create virtual environment (run once):
+#   python -m venv venv
+#
+# Step 2 — Activate virtual environment:
+#   Windows  : venv\Scripts\activate
+#   Mac/Linux: source venv/bin/activate
+#
+# Step 3 — Install PyTorch (CPU version — for your AMD Ryzen laptop):
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+#
+# Step 4 — Install remaining packages:
+#   pip install -r requirements.txt
+#
+# =============================================================================
+
+# Core AI detection library — includes YOLOv8 model loader and runner
+ultralytics==8.3.0
+
+# Computer vision — webcam capture, frame drawing, image processing
+opencv-python==4.9.0.80
+
+# Numerical computing — array operations, bounding box math
+numpy==1.26.4
+
+# Image processing — used for optional UI enhancements (Pillow)
+Pillow==10.3.0
+
+# Audio alert — cross-platform sound playback for Phase 3
+playsound==1.3.0
+
+# =============================================================================
+# NOTE: PyTorch (torch, torchvision) is installed separately via the command
+# above because the CPU-only version requires a special index URL.
+# If you install torch via this file without that URL, it installs the
+# GPU (CUDA) version which will fail on your AMD integrated graphics laptop.
+# =============================================================================
