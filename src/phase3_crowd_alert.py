@@ -1,21 +1,3 @@
-# =============================================================================
-# PROJECT  : Real-Time Object and Human Detection with Crowd Alert System
-# PHASE    : Phase 3 — Multi-Person Detection with Crowd Alert System
-# AUTHOR   : Ashish Kumar
-# COMPANY  : Techlive Solutions
-# PURPOSE  : Count persons in real time. When more than 2 persons are detected,
-#            trigger an audio beep alert, show a red warning banner on screen,
-#            log the event to a CSV file, and auto-save a screenshot as evidence.
-# =============================================================================
-#
-# KEY FIXES IN THIS VERSION:
-#   1. winsound.Beep() runs in a SEPARATE THREAD so it never blocks the camera
-#   2. CSV writing uses try/except with detailed error messages
-#   3. outputs folder is created with full permissions check before any writing
-#   4. All file paths are absolute — no relative path issues on Windows
-# =============================================================================
-
-# ── IMPORTS ───────────────────────────────────────────────────────────────────
 import cv2                      # OpenCV — webcam, drawing, display window
 import time                     # FPS calculation and alert cooldown timer
 import csv                      # Writing alert events to CSV log file
@@ -32,18 +14,6 @@ try:
 except ImportError:
     AUDIO_AVAILABLE = False
 
-# ── CONFIGURATION ─────────────────────────────────────────────────────────────
-CAMERA_INDEX    = 0              # 0 = built-in webcam. 1 = USB camera.
-FRAME_WIDTH     = 640            # Frame width in pixels
-FRAME_HEIGHT    = 480            # Frame height in pixels
-CONFIDENCE_MIN  = 0.40           # Minimum YOLO confidence threshold (40%)
-MODEL_PATH      = "yolov8n.pt"  # YOLOv8 nano model — best for CPU laptops
-
-# Absolute path — works regardless of which folder terminal is open in
-# __file__ = full path of this script e.g. D:\crowd_detection\src\phase3...py
-# dirname  = D:\crowd_detection\src
-# join ..  = D:\crowd_detection
-# join outputs = D:\crowd_detection\outputs
 OUTPUT_DIR = os.path.normpath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "outputs")
 )
@@ -65,7 +35,6 @@ COLOR_COUNT_SAFE    = (0, 220, 80)     # Green  — count panel safe state
 COLOR_COUNT_DANGER  = (0, 60, 255)     # Red    — count panel alert state
 COLOR_ALERT_BG      = (0, 0, 180)      # Dark red — alert banner background
 
-# ── CLASS ID ──────────────────────────────────────────────────────────────────
 PERSON_CLASS_ID = 0   # "person" is always class 0 in COCO dataset
 
 
@@ -331,8 +300,6 @@ def draw_hud(frame, person_count: int, fps: float,
                 cv2.FONT_HERSHEY_SIMPLEX, 0.42,
                 (180, 180, 180), 1, cv2.LINE_AA)
 
-
-# ── MAIN FUNCTION ─────────────────────────────────────────────────────────────
 def main():
     print("=" * 60)
     print("  Phase 3: Crowd Alert System")
@@ -475,7 +442,6 @@ def main():
     cv2.destroyAllWindows()
     print("[INFO] Phase 3 complete.")
     print("=" * 60)
-
 
 if __name__ == "__main__":
     main()
