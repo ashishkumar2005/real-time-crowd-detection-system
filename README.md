@@ -35,7 +35,6 @@ crowd_detection/
 ├── models/
 ├── outputs/
 ├── datasets/
-├── docs/
 ├── requirements.txt
 └── README.md
 ```
@@ -97,15 +96,3 @@ python src/phase3_crowd_alert.py
 * Average FPS: 12–13 FPS (CPU)
 * Resolution: 640 × 480
 * Model Size: 6.2 MB
-
-## Future Improvements
-
-* Email and SMS alerts
-* GPU acceleration
-* Web dashboard integration
-* Video recording support
-* Cloud deployment
-
-## License
-
-This project is licensed under the MIT License.
