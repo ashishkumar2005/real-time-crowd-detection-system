@@ -4,7 +4,6 @@ import numpy as np                  # Array operations for frame processing
 from datetime import datetime       # Timestamp for saved screenshots
 from ultralytics import YOLO        # YOLOv8 model loader and runner
 
-# ── CONFIGURATION ─────────────────────────────────────────────────────────────
 CAMERA_INDEX    = 0             # 0 = built-in webcam. Change to 1 for USB camera.
 FRAME_WIDTH     = 640           # Video frame width in pixels
 FRAME_HEIGHT    = 480           # Video frame height in pixels
@@ -18,8 +17,6 @@ PERSON_COLOR = (0, 230, 0)
 
 NUMBER_COLOR = (255, 255, 255)
 
-
-# ── DRAW PERSON BOX ───────────────────────────────────────────────────────────
 def draw_person_box(frame, box, person_number: int, confidence: float) -> None:
   
     x1 = int(box.xyxy[0][0])
@@ -39,12 +36,8 @@ def draw_person_box(frame, box, person_number: int, confidence: float) -> None:
         label, cv2.FONT_HERSHEY_SIMPLEX, 0.60, 2
     )
 
-    # Calculate label position — just above the top of the bounding box
-    # max() ensures label doesn't go above the frame edge if person is at top
     label_y = max(y1 - 2, text_h + 10)
 
-    # Draw dark background rectangle behind the label for readability
-    # Slightly wider and taller than the text itself (+8px padding)
     cv2.rectangle(
         frame,
         (x1, label_y - text_h - 8),
@@ -52,9 +45,7 @@ def draw_person_box(frame, box, person_number: int, confidence: float) -> None:
         (20, 20, 20),       # Very dark background — visible over any scene
         cv2.FILLED
     )
-
-    # Draw a thin green border around the label background
-    # This makes it look clean and professional
+  
     cv2.rectangle(
         frame,
         (x1, label_y - text_h - 8),
@@ -111,9 +102,6 @@ def draw_count_panel(frame, person_count: int, fps: float) -> None:
                 (frame_w - pw - 12, 33),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.55, (180, 200, 255), 1, cv2.LINE_AA)
 
-    # ── Person count display ──────────────────────────────────────────────────
-    # Choose color based on how many people are detected
-    # This is a preview of the alert logic that Phase 3 will act on
     if person_count == 0:
         count_color = (160, 160, 160)    # Gray — nobody detected
     elif person_count <= 2:
@@ -123,8 +111,6 @@ def draw_count_panel(frame, person_count: int, fps: float) -> None:
     else:
         count_color = (0, 60, 255)       # Red — crowd detected (Phase 3 alert zone)
 
-    # Draw count panel background in bottom-left corner
-    # Size: 200px wide, 80px tall — gives enough room for large number
     panel_x, panel_y = 10, frame_h - 100
     overlay2 = frame.copy()
     cv2.rectangle(overlay2, (panel_x, panel_y),
@@ -160,8 +146,6 @@ def draw_count_panel(frame, person_count: int, fps: float) -> None:
                 cv2.FONT_HERSHEY_SIMPLEX, 0.42,
                 (180, 180, 180), 1, cv2.LINE_AA)
 
-
-# ── MAIN FUNCTION ─────────────────────────────────────────────────────────────
 def main():
     print("=" * 60)
     print("  Phase 2: Person-Only Detection")
@@ -170,8 +154,6 @@ def main():
     print("  Camera: Index", CAMERA_INDEX)
     print("=" * 60)
 
-    # ── Load YOLOv8 model ─────────────────────────────────────────────────────
-    # Same model as Phase 1 — yolov8n.pt already downloaded, loads from cache
     print("\n[INFO] Loading YOLOv8n model...")
     model = YOLO(MODEL_PATH)
     print("[INFO] Model loaded. Ready for person detection.")
@@ -250,13 +232,10 @@ def main():
             fps_counter = 0
             fps_start   = time.time()
 
-        # ── Draw the count panel and HUD overlays ─────────────────────────────
         draw_count_panel(frame, person_count, fps_display)
 
-        # ── Show the annotated frame ───────────────────────────────────────────
         cv2.imshow("Phase 2 — Person Detection | Techlive Solutions", frame)
-
-        # ── Handle keyboard input ─────────────────────────────────────────────
+      
         key = cv2.waitKey(1) & 0xFF
 
         if key == ord('q') or key == ord('Q'):
@@ -270,14 +249,11 @@ def main():
             print(f"[INFO] Screenshot saved → {filename}")
             print(f"[INFO] Persons in screenshot: {person_count}")
 
-    # ── Cleanup ───────────────────────────────────────────────────────────────
     print("\n[INFO] Releasing camera and closing display window...")
     cap.release()
     cv2.destroyAllWindows()
     print("[INFO] Phase 2 complete.")
     print("=" * 60)
 
-
-# ── ENTRY POINT ───────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     main()
